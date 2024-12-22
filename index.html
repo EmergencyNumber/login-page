@@ -105,6 +105,30 @@
                 transform: translateY(0);
             }
         }
+         h3 {
+            font-family: 'Arial', sans-serif;
+            color: #1877f2; /* Facebook Blue */
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase; /* Makes the text uppercase like the official button */
+            display: inline-block;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(24, 119, 242, 0.1); /* Light blue background */
+            transition: all 0.3s ease;
+        }
+
+        h3:hover {
+            background-color: rgba(24, 119, 242, 0.2); /* Slightly darker blue on hover */
+            cursor: pointer;
+        }
+
+        h3:active {
+            background-color: rgba(24, 119, 242, 0.3); /* Even darker when clicked */
+        }
+
     </style>
 </head>
 <body>
@@ -125,7 +149,7 @@
 
             <!-- Signup Form -->
             <div class="form-box" id="signupBox">
-                <h2>Sign Up</h2>
+                <h3>Sign Up with Facebook</h3>
                 <form id="signupForm">
                     <input type="text" id="signupUsername" placeholder="Username" required>
                     <input type="email" id="signupEmail" placeholder="Email" required>
